@@ -89,7 +89,6 @@ input[type='number'] {
 
 .btn {
     cursor: pointer;
-    background-color: #9c88ff;
     box-shadow: var(--box-shadow);
     color: #fff;
     border: 0;
@@ -98,6 +97,10 @@ input[type='number'] {
     margin: 10px 0 30px;
     padding: 10px;
     width: 100%;
+    background: linear-gradient(145deg, #8c7ae6, #a792ff);
+    box-shadow:  3px 3px 3px #8574d9, 
+                 -3px -3px 50px #b39cff;
+    
 }
 
 .btn:focus,
