@@ -151,3 +151,11 @@ input[type='number'] {
 .transactions li:hover .delete-btn {
     opacity: 1;
 }
+
+.balance-negative {
+    color: #e74c3c;
+}
+
+.balance-positive {
+    color: #00e760;
+}

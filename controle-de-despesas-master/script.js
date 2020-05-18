@@ -53,6 +53,14 @@ const updateBalanceValues = () => {
     incomeDisplay.textContent = `R$ ${income}`
     expenseDisplay.textContent = `- R$ ${expenses}`
 
+    // Atualiza cor de exibição do saldo atual
+    if(total >= 0){
+        balanceDisplay.classList.remove("balance-negative");
+        balanceDisplay.classList.add("balance-positive");
+    } else {
+        balanceDisplay.classList.remove("balance-positive");
+        balanceDisplay.classList.add("balance-negative");
+    }
 }
 
 const init = () => {
