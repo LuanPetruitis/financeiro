@@ -1,2 +1,2 @@
 # financeiro
- contralar finanças
+ controlar finanças
