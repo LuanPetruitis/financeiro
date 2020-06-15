@@ -54,7 +54,7 @@ const updateBalanceValues = () => {
     expenseDisplay.textContent = `- R$ ${expenses}`
 
     // Atualiza cor de exibição do saldo atual
-    if(total >= 0){
+    if (total >= 0) {
         balanceDisplay.classList.remove("balance-negative");
         balanceDisplay.classList.add("balance-positive");
     } else {
@@ -109,3 +109,18 @@ const handleFormSubmit = event => {
 }
 
 form.addEventListener('submit', handleFormSubmit)
+
+function investimento() {
+    var valor = document.getElementById('total')
+    var invest = document.getElementById('investir')
+    var juro = document.getElementById('juros')
+    var temp = document.getElementById('tempo')
+    var total = 0
+    for (var c = 0; c == temp.value; c++) {
+        var total = (invest.value * (juro.value / 100))
+    }
+    var textElement = document.createTextNode(`R$ ${total}`)
+    const caixa = document.createElement("div")
+    caixa.appendChild(textElement)
+    valor.appendChild(caixa)
+}
