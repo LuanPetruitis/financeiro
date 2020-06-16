@@ -115,9 +115,10 @@ function investimento() {
     var invest = document.getElementById('investir')
     var juro = document.getElementById('juros')
     var temp = document.getElementById('tempo')
-    var total = 0
-    for (var c = 0; c == temp.value; c++) {
-        var total = (invest.value * (juro.value / 100))
+    var total = invest.value
+    var jurom = (juro.value / 12)
+    for (var c = 0; c <= temp.value; c++) {
+        var total = (total * (jurom / 100))
     }
     var textElement = document.createTextNode(`R$ ${total}`)
     const caixa = document.createElement("div")
