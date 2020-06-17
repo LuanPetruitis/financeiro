@@ -115,13 +115,20 @@ function investimento() {
     var invest = document.getElementById('investir')
     var juro = document.getElementById('juros')
     var temp = document.getElementById('tempo')
-    var total = invest.value
-    var jurom = (juro.value / 12)
-    for (var c = 0; c <= temp.value; c++) {
-        var total = (total * (jurom / 100))
-    }
-    var textElement = document.createTextNode(`R$ ${total}`)
+    const montante = invest.value * (1 + (juro.value / 100)) ** temp.value
+    var textElement = document.createTextNode(`R$ ${montante.toFixed(2)}`)
     const caixa = document.createElement("div")
     caixa.appendChild(textElement)
     valor.appendChild(caixa)
+    var ganhou = document.getElementById('ganho')
+    var dinheiro = (montante - invest.value)
+    var textJuro = document.createTextNode(`R$ ${dinheiro.toFixed(2)}`)
+    const box = document.createElement("div")
+    box.appendChild(textJuro)
+    ganhou.appendChild(box)
+}
+
+const update = () => {
+    localStorage.setItem('montante', JSON.stringify(montante))
+    localStorage.setItem('dinheiro', JSON.stringify(dinheiro))
 }
