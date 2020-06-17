@@ -115,7 +115,7 @@ function investimento() {
     var invest = document.getElementById('investir')
     var juro = document.getElementById('juros')
     var temp = document.getElementById('tempo')
-    const montante = invest.value * (1 + (juro.value / 100)) ** temp.value
+    const montante = invest.value * (1 + ((juro.value / 12) / 100)) ** temp.value
     var textElement = document.createTextNode(`R$ ${montante.toFixed(2)}`)
     const caixa = document.createElement("div")
     caixa.appendChild(textElement)
