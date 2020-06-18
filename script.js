@@ -1,27 +1,27 @@
-const transactionsUl = document.querySelector('#transactions')
-const incomeDisplay = document.querySelector('#money-plus')
-const expenseDisplay = document.querySelector('#money-minus')
-const balanceDisplay = document.querySelector('#balance')
-const form = document.querySelector('#form')
-const inputTransactionName = document.querySelector('#text')
-const inputTransactionAmount = document.querySelector('#amount')
+const transactionsUl = document.querySelector('#transactions');
+const incomeDisplay = document.querySelector('#money-plus');
+const expenseDisplay = document.querySelector('#money-minus');
+const balanceDisplay = document.querySelector('#balance');
+const form = document.querySelector('#form');
+const inputTransactionName = document.querySelector('#text');
+const inputTransactionAmount = document.querySelector('#amount');
 
 const localStorageTransactions = JSON.parse(localStorage
-    .getItem('transactions'))
+    .getItem('transactions'));
 let transactions = localStorage
-    .getItem('transactions') !== null ? localStorageTransactions : []
+    .getItem('transactions') !== null ? localStorageTransactions : [];
 
 const removeTransaction = ID => {
-    transactions = transactions.filter(transaction => transaction.id !== ID)
-    updateLocalStorage()
-    init()
-}
+    transactions = transactions.filter(transaction => transaction.id !== ID);
+    updateLocalStorage();
+    init();
+};
 
 const addTransactionsIntoDOM = transaction => {
-    const operator = transaction.amount < 0 ? '-' : '+'
-    const CSSClass = transaction.amount < 0 ? 'minus' : 'plus'
-    const amountWithoutOperator = Math.abs(transaction.amount)
-    const li = document.createElement('li')
+    const operator = transaction.amount < 0 ? '-' : '+';
+    const CSSClass = transaction.amount < 0 ? 'minus' : 'plus';
+    const amountWithoutOperator = Math.abs(transaction.amount);
+    const li = document.createElement('li');
 
     li.classList.add(CSSClass)
     li.innerHTML = `
@@ -31,12 +31,12 @@ const addTransactionsIntoDOM = transaction => {
         x
     </button>
     `
-    transactionsUl.append(li)
-}
+    transactionsUl.append(li);
+};
 
 const updateBalanceValues = () => {
     const transactionsAmounts = transactions
-        .map(transactions => transactions.amount)
+        .map(transactions => transactions.amount);
     const total = transactionsAmounts
         .reduce((accumulator, transactions) => accumulator + transactions, 0)
         .toFixed(2)
@@ -49,9 +49,9 @@ const updateBalanceValues = () => {
             .reduce((accumulator, value) => accumulator + value, 0))
         .toFixed(2)
 
-    balanceDisplay.textContent = `R$ ${total}`
-    incomeDisplay.textContent = `R$ ${income}`
-    expenseDisplay.textContent = `- R$ ${expenses}`
+    balanceDisplay.textContent = `R$ ${total}`;
+    incomeDisplay.textContent = `R$ ${income}`;
+    expenseDisplay.textContent = `- R$ ${expenses}`;
 
     // Atualiza cor de exibição do saldo atual
     if (total >= 0) {
@@ -64,18 +64,18 @@ const updateBalanceValues = () => {
 }
 
 const init = () => {
-    transactionsUl.innerHTML = ''
-    transactions.forEach(addTransactionsIntoDOM)
-    updateBalanceValues()
-}
+    transactionsUl.innerHTML = '';
+    transactions.forEach(addTransactionsIntoDOM);
+    updateBalanceValues();
+};
 
-init()
+init();
 
 const updateLocalStorage = () => {
-    localStorage.setItem('transactions', JSON.stringify(transactions))
-}
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+};
 
-const generateID = () => Math.round(Math.random() * 1000)
+const generateID = () => Math.round(Math.random() * 1000);
 
 const addTransactionsArray = (transactionsName, transactionsAmount) => {
     transactions.push({
@@ -83,50 +83,56 @@ const addTransactionsArray = (transactionsName, transactionsAmount) => {
         name: transactionsName,
         amount: Number(transactionsAmount)
     })
-}
+};
 
 const cleanInputs = () => {
     inputTransactionName.value = ''
     inputTransactionAmount.value = ''
-}
+};
 
 const handleFormSubmit = event => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const transactionsName = inputTransactionName.value.trim()
-    const transactionsAmount = inputTransactionAmount.value.trim()
-    const isSomeInputEmpty = transactionsName === '' || transactionsAmount === ''
+    const transactionsName = inputTransactionName.value.trim();
+    const transactionsAmount = inputTransactionAmount.value.trim();
+    const isSomeInputEmpty = transactionsName === '' || transactionsAmount === '';
 
     if (isSomeInputEmpty) {
         alert('Por favor, preencha tanto o nome quanto o valor da transação')
         return
-    }
+    };
 
-    addTransactionsArray(transactionsName, transactionsAmount)
-    init()
-    updateLocalStorage()
-    cleanInputs()
-}
+    addTransactionsArray(transactionsName, transactionsAmount);
+    init();
+    updateLocalStorage();
+    cleanInputs();
+};
 
-form.addEventListener('submit', handleFormSubmit)
+form.addEventListener('submit', handleFormSubmit);
 
 function investimento() {
-    var valor = document.getElementById('total')
-    var invest = document.getElementById('investir')
-    var juro = document.getElementById('juros')
-    var temp = document.getElementById('tempo')
-    const montante = invest.value * (1 + ((juro.value / 12) / 100)) ** temp.value
-    var textElement = document.createTextNode(`R$ ${montante.toFixed(2)}`)
-    const caixa = document.createElement("div")
-    caixa.appendChild(textElement)
-    valor.appendChild(caixa)
-    var ganhou = document.getElementById('ganho')
-    var dinheiro = (montante - invest.value)
-    var textJuro = document.createTextNode(`R$ ${dinheiro.toFixed(2)}`)
-    const box = document.createElement("div")
-    box.appendChild(textJuro)
-    ganhou.appendChild(box)
-}
+    var valor = document.getElementById('total');
+    var invest = document.getElementById('investir');
+    var juro = document.getElementById('juros');
+    var temp = document.getElementById('tempo');
+    const montante = invest.value * (1 + ((juro.value / 12) / 100)) ** temp.value;
+    var textElement = document.createTextNode(`R$ ${montante.toFixed(2)}`);
+    const caixa = document.createElement("div");
+    caixa.appendChild(textElement);
+    var ganhou = document.getElementById('ganho');
+    var dinheiro = montante - invest.value;
+    var textJuro = document.createTextNode(`R$ ${dinheiro.toFixed(2)}`);
+    const box = document.createElement("div");
+    box.appendChild(textJuro);
+
+    // Antes de adicionar o valor ganho, limpa valores que já estejam sendo exibidos
+    ganhou.innerHTML = "";
+    valor.innerHTML = "";
+
+    // Adiciona novos valores
+    ganhou.appendChild(box);
+    valor.appendChild(caixa);
+};
 
 const update = () => {
     localStorage.setItem('montante', JSON.stringify(montante))
