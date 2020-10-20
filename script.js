@@ -6,6 +6,45 @@ const form = document.querySelector('#form');
 const inputTransactionName = document.querySelector('#text');
 const inputTransactionAmount = document.querySelector('#amount');
 
+const html = document.querySelector("html")
+const checkbox = document.querySelector("input[name=theme]")
+
+
+// Para evitar repitir código
+const getStyle = (element, style) =>
+    window
+    .getComputedStyle(element)
+    .getPropertyValue(style)
+
+
+const initialColors = {
+    // Pega os estilos
+    // bg: window.getComputedStyle(html).getPropertyValue("--bg"),
+    bg: getStyle(html, "--bg"),
+    colorHeadings: getStyle(html, "--color-headings"),
+}
+
+const darkMode = {
+    bg: "#333333",
+    colorHeadings: "#3664FF",
+}
+
+const transformKey = key =>
+    "--" + key.replace(/([A-Z])/, "-$1").toLowerCase()
+
+
+const changeColors = (colors) => {
+    Object.keys(colors).map(key =>
+        html.style.setProperty(transformKey(key), colors[key])
+    )
+}
+
+
+checkbox.addEventListener("change", ({ target }) => {
+    target.checked ? changeColors(darkMode) : changeColors(initialColors)
+})
+
+
 const localStorageTransactions = JSON.parse(localStorage
     .getItem('transactions'));
 let transactions = localStorage
@@ -25,7 +64,7 @@ const addTransactionsIntoDOM = transaction => {
 
     li.classList.add(CSSClass)
     li.innerHTML = `
-    ${transaction.name} 
+    ${transaction.name}
     <span>${operator} R$ ${amountWithoutOperator}</span>
     <button class="delete-btn" onClick="removeTransaction(${transaction.id})">
         x
@@ -112,15 +151,23 @@ form.addEventListener('submit', handleFormSubmit);
 
 function investimento() {
     var valor = document.getElementById('total');
-    var invest = document.getElementById('investir');
-    var juro = document.getElementById('juros');
-    var temp = document.getElementById('tempo');
-    const montante = invest.value * (1 + ((juro.value / 12) / 100)) ** temp.value;
+    var invest = document.getElementById('investir').value;
+    var juro = document.getElementById('juros').value;
+    let mes = [];
+    let selic = [];
+    let juroMes = juro / 12;
+    var montante = totalSelic = invest;
+    for (var i = 0; i != 12; i++) {
+        montante = parseFloat(montante) + (parseFloat(montante) * (juroMes / 100));
+        mes[i] = montante;
+        totalSelic = parseFloat(totalSelic) + (parseFloat(totalSelic) * (0.16 / 100));
+        selic[i] = totalSelic;
+    }
     var textElement = document.createTextNode(`R$ ${montante.toFixed(2)}`);
     const caixa = document.createElement("div");
     caixa.appendChild(textElement);
     var ganhou = document.getElementById('ganho');
-    var dinheiro = montante - invest.value;
+    var dinheiro = montante - invest;
     var textJuro = document.createTextNode(`R$ ${dinheiro.toFixed(2)}`);
     const box = document.createElement("div");
     box.appendChild(textJuro);
@@ -132,6 +179,30 @@ function investimento() {
     // Adiciona novos valores
     ganhou.appendChild(box);
     valor.appendChild(caixa);
+
+    // Grafico 
+
+    var ctx = document.getElementsByClassName("line-chart");
+
+    var chartGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            datasets: [{
+                label: "INVESTIMENTO",
+                data: mes,
+                borderWidth: 6,
+                borderColor: 'rgba(77, 166, 253, 0.85)',
+                backgroundColor: 'transparent'
+            }, {
+                label: "SELIC",
+                data: selic,
+                borderWidth: 6,
+                borderColor: 'rgba(200, 200, 200, 0.85)',
+                backgroundColor: 'transparent'
+            }]
+        }
+    });
 };
 
 const update = () => {
