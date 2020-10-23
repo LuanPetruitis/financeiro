@@ -149,20 +149,28 @@ const handleFormSubmit = event => {
 
 form.addEventListener('submit', handleFormSubmit);
 
-function investimento() {
-    var valor = document.getElementById('total');
-    var invest = document.getElementById('investir').value;
-    var juro = document.getElementById('juros').value;
-    let mes = [];
-    let selic = [];
+// Investimento
+
+var montante = 0;
+let mes = [];
+let selic = [];
+let poupanca = [];
+
+function calculos(invest, juro) {
     let juroMes = juro / 12;
-    var montante = totalSelic = invest;
+    montante = totalSelic = totalPoupanca = invest;
     for (var i = 0; i != 12; i++) {
         montante = parseFloat(montante) + (parseFloat(montante) * (juroMes / 100));
         mes[i] = montante;
         totalSelic = parseFloat(totalSelic) + (parseFloat(totalSelic) * (0.16 / 100));
         selic[i] = totalSelic;
+        totalPoupanca = parseFloat(totalPoupanca) + (parseFloat(totalPoupanca) * (0.11 / 100));
+        poupanca[i] = totalPoupanca;
     }
+    return montante
+}
+
+function colocarValoresEmTela(valor, invest) {
     var textElement = document.createTextNode(`R$ ${montante.toFixed(2)}`);
     const caixa = document.createElement("div");
     caixa.appendChild(textElement);
@@ -179,9 +187,9 @@ function investimento() {
     // Adiciona novos valores
     ganhou.appendChild(box);
     valor.appendChild(caixa);
+}
 
-    // Grafico 
-
+function grafico() {
     var ctx = document.getElementsByClassName("line-chart");
 
     var chartGraph = new Chart(ctx, {
@@ -200,12 +208,27 @@ function investimento() {
                 borderWidth: 6,
                 borderColor: 'rgba(200, 200, 200, 0.85)',
                 backgroundColor: 'transparent'
+            }, {
+                label: "POUPANÇA",
+                data: poupanca,
+                borderWidth: 6,
+                borderColor: 'rgba(200, 0, 0, 0.85)',
+                backgroundColor: 'transparent'
             }]
         }
     });
-};
-
-const update = () => {
-    localStorage.setItem('montante', JSON.stringify(montante))
-    localStorage.setItem('dinheiro', JSON.stringify(dinheiro))
 }
+
+function investimento() {
+    var valor = document.getElementById('total');
+    var invest = document.getElementById('investir').value;
+    var juro = document.getElementById('juros').value;
+
+    calculos(invest, juro)
+
+    colocarValoresEmTela(valor, invest)
+
+    // Grafico 
+    grafico();
+
+};
